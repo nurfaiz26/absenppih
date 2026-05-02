@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Filament\Resources\Presensis\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
+
+class PresensisTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('petugas.nama')
+                    ->searchable(),
+                TextColumn::make('seksi.nama')
+                    ->searchable(),
+                TextColumn::make('bidang.nama')
+                    ->searchable(),
+                TextColumn::make('jabatan.nama')
+                    ->searchable(),
+                TextColumn::make('tanggal')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                ...(Auth::id() == 1 ? [TrashedFilter::make()] : []),
+                SelectFilter::make('seksi_id')
+                    ->label('Seksi')
+                    ->relationship('seksi', 'nama') // tampilkan kolom nama
+                    ->searchable()
+                    ->preload(),
+
+                SelectFilter::make('bidang_id')
+                    ->label('Bidang')
+                    ->relationship('bidang', 'nama') // tampilkan kolom nama
+                    ->searchable()
+                    ->preload(),
+
+                SelectFilter::make('jabatan_id')
+                    ->label('Jabatan')
+                    ->relationship('jabatan', 'nama') // tampilkan kolom nama
+                    ->searchable()
+                    ->preload(),
+            ])
+            ->recordActions([
+                ...(Auth::id() == 1 ? [EditAction::make()] : []),
+                ViewAction::make(),
+            ])
+            ->toolbarActions([
+                ...(Auth::id() == 1 ? [Auth::id() == 1 ?
+                    BulkActionGroup::make([
+                        DeleteBulkAction::make(),
+                        ForceDeleteBulkAction::make(),
+                        RestoreBulkAction::make(),
+                    ]) : null,] : []),
+            ]);
+    }
+}
