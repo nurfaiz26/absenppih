@@ -26,9 +26,9 @@ class PresensisTable
     {
         return $table
             ->headerActions([
-                ExportAction::make()->exporter(PresensiExporter::class)->label('Download Data')->formats([
+                ...(Auth::user()->name == 'Admin' ? [ExportAction::make()->exporter(PresensiExporter::class)->label('Download Data')->formats([
                     ExportFormat::Xlsx,
-                ])
+                ])] : [])
             ])
             ->columns([
                 TextColumn::make('petugas.nama')

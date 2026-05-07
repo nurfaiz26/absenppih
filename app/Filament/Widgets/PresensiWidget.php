@@ -10,6 +10,7 @@ use Filament\Widgets\Widget;
 class PresensiWidget extends Widget
 {
     protected string $view = 'filament.widgets.presensi-widget';
+    protected static ?int $sort = 1;
 
     protected function getStats(): array
     {
