@@ -8,11 +8,13 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class PresensisTable
@@ -47,8 +49,20 @@ class PresensisTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('tanggal', 'desc')
             ->filters([
                 ...(Auth::id() == 1 ? [TrashedFilter::make()] : []),
+                Filter::make('tanggal')
+                    ->form([
+                        DatePicker::make('from')->label('Dari Tanggal'),
+                        DatePicker::make('until')->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn($query, $date) => $query->whereDate('tanggal', '>=', $date))
+                            ->when($data['until'], fn($query, $date) => $query->whereDate('tanggal', '<=', $date));
+                    }),
+
                 SelectFilter::make('seksi_id')
                     ->label('Seksi')
                     ->relationship('seksi', 'nama') // tampilkan kolom nama
