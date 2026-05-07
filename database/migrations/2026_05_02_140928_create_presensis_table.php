@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Seksi::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Bidang::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Jabatan::class)->constrained()->cascadeOnDelete();
+            $table->enum('status', ['Hadir', 'Izin', 'Sakit']);
             $table->timestamp('tanggal');
             $table->timestamps();
             $table->softDeletes();

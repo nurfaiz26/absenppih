@@ -34,6 +34,7 @@ class AdminPanelProvider extends PanelProvider
                 // 'primary' => Color::Amber,
                 'primary' => "#FFD700",
             ])
+            ->darkMode(false)
             ->brandName('Presensi PPIH Embarkasi Surabaya')
             // ->brandLogo(asset('images/logo.png'))
             // ->brandLogoHeight('60px')

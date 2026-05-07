@@ -23,6 +23,8 @@ class PresensisTable
             ->columns([
                 TextColumn::make('petugas.nama')
                     ->searchable(),
+                TextColumn::make('status')
+                    ->searchable(),
                 TextColumn::make('seksi.nama')
                     ->searchable(),
                 TextColumn::make('bidang.nama')
@@ -62,6 +64,16 @@ class PresensisTable
                 SelectFilter::make('jabatan_id')
                     ->label('Jabatan')
                     ->relationship('jabatan', 'nama') // tampilkan kolom nama
+                    ->searchable()
+                    ->preload(),
+
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'Hadir',
+                        'Izin',
+                        'Sakit'
+                    ])
                     ->searchable()
                     ->preload(),
             ])

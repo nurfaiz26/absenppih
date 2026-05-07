@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Presensis\Schemas;
 // use Filament\Forms\Components\Builder;
 
 use App\Models\Presensi;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder; // ✅ BENAR
 use Illuminate\Database\Query\Builder as QBuilder; // ✅ BENAR
 use Filament\Forms\Components\DateTimePicker;
@@ -57,7 +58,7 @@ class PresensiForm
                     ->reactive()
                     ->dehydrated()
                     ->afterStateUpdated(fn($set) => $set('petugas_id', null)),
-                    // ->disabled(fn($get) => !$get('bidang_id')),
+                // ->disabled(fn($get) => !$get('bidang_id')),
 
                 Select::make('petugas_id')
                     ->label('Petugas')
@@ -89,8 +90,26 @@ class PresensiForm
                         return Auth::id() === 3;
                     })
                     ->dehydrated(), // tetap dikirim ke database walau disabled
-                DateTimePicker::make('tanggal')
+
+                Select::make('status')
+                    ->label('Status')
+                    ->options([
+                        'Hadir',
+                        'Izin',
+                        'Sakit'
+                    ])
                     ->required(),
+
+                Auth::user()->name != 'Admin' ?
+                    DateTimePicker::make('tanggal')
+                    ->disabled()
+                    ->default(fn() => Carbon::now())
+                    ->dehydrated()
+                    ->required()
+                    :
+                    DateTimePicker::make('tanggal')
+                    ->default(fn() => Carbon::now())
+                    ->required()
             ]);
     }
 }

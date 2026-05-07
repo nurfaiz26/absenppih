@@ -22,6 +22,10 @@ class PresensiResource extends Resource
 
     protected static ?string $navigationLabel = 'Presensi';
 
+    protected static ?string $modelLabel = 'Presensi';
+
+    protected static ?string $pluralModelLabel = 'Presensi';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Presensi';
