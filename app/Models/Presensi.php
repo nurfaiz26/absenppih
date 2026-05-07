@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['tanggal', 'seksi_id', 'bidang_id', 'petugas_id', 'jabatan_id'])]
+#[Fillable(['tanggal', 'seksi_id', 'bidang_id', 'petugas_id', 'jabatan_id', 'status'])]
 class Presensi extends Model
 {
     /** @use HasFactory<\Database\Factories\PresensiFactory> */

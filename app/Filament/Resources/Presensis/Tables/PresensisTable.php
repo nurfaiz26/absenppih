@@ -92,9 +92,9 @@ class PresensisTable
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'Hadir',
-                        'Izin',
-                        'Sakit'
+                        'Hadir' => 'Hadir',
+                        'Izin' => 'Izin',
+                        'Sakit' => 'Sakit'
                     ])
                     ->searchable()
                     ->preload(),
