@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Presensis\Tables;
 
+use App\Filament\Exports\PresensiExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
@@ -22,6 +25,11 @@ class PresensisTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->headerActions([
+                ExportAction::make()->exporter(PresensiExporter::class)->label('Download Data')->formats([
+                    ExportFormat::Xlsx,
+                ])
+            ])
             ->columns([
                 TextColumn::make('petugas.nama')
                     ->searchable(),

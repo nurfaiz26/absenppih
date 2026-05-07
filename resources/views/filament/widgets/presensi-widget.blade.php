@@ -4,11 +4,12 @@
         @php
             $todayCount = App\Models\Presensi::whereDate('tanggal', Carbon\Carbon::today())->count();
             $allPetugas = App\Models\Petugas::all()->count();
+            $persentase = ($todayCount/$allPetugas)*100;
         @endphp
 
         <a href="{{ route('filament.admin.resources.presensis.index') }}"
             class="block p-6 bg-white rounded-xl shadow hover:bg-gray-100">
-            <h2 class="text-lg font-bold">Total Sudah Presensi Hari Ini: {{ $todayCount }}/{{ $allPetugas }} Petugas</h2>
+            <h2 class="text-lg font-bold">Total Sudah Presensi Hari Ini: {{ $todayCount }}/{{ $allPetugas }} ({{ round($persentase, 2) }}%) Petugas</h2>
             <p style="display: flex;">Klik untuk masuk ke halaman presensi 
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="20" height="20" fill="none" viewBox="0 0 24 24">
